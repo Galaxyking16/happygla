@@ -348,7 +348,7 @@ Object.setPrototypeOf(window.FontFace, OriginalFontFace);
 
 
 function rewriteURL(original) {
-if (original.includes("mepix.com")) return "d";
+//if (original.includes("mepix.com")) return "d";
   if (original.startsWith("blob:") || original.startsWith("data:")) return original;
   
   let trimmed =  original.split("/").pop(); 
