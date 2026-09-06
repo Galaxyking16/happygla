@@ -134,10 +134,15 @@ async function unzipToBlobUrls(zipBlob) {
 
         const rawBlob = await file.async("blob");
         const finalBlob = mime
-            ? rawBlob.slice(0, rawBlob.size, mime)
-            : rawBlob;
+    ? rawBlob.slice(0, rawBlob.size, mime)
+    : rawBlob;
 
-        blobUrls[filename] = URL.createObjectURL(finalBlob);
+blobUrls[filename] = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(finalBlob);
+});
 		console.log(filename);
     }
 
@@ -348,7 +353,7 @@ Object.setPrototypeOf(window.FontFace, OriginalFontFace);
 
 
 function rewriteURL(original) {
-//if (original.includes("mepix.com")) return "d";
+if (original.includes("mepix.com")) return "http://localhost:8000/d";
   if (original.startsWith("blob:") || original.startsWith("data:")) return original;
   
   let trimmed =  original.split("/").pop(); 
